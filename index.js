@@ -10,12 +10,14 @@ let pipColors = [
     "#9C5EBF",
     "#EB1160"
 ];
-let gridSpacing = 18;
 let columns = 3;
 let spinnerRotate = 0;
 
 class LoadingAnimation {
-    constructor(domTarget) {
+    constructor(domTarget, opts = {}) {
+        const pipSize = opts.pipSize || 9;
+        const size = pipSize * 5;
+        let gridSpacing = pipSize * 2;
         let newPipDiv, newPip;
 
         this.target = domTarget;
@@ -24,24 +26,26 @@ class LoadingAnimation {
 
         this.loaderTime = 0;
         this.loader = document.createElement('div');
-        this.loader.style.width  = "45px";
-        this.loader.style.height = "45px";
+        this.loader.style.width  = `${size}px`;
+        this.loader.style.height = `${size}px`;
         this.loader.style.transition = "transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)";
         this.loader.style.transform = "rotate(0deg)";
+        this.loader.className = 'animation';
         for (let i = 0; i < 9; i++) {
             newPipDiv = document.createElement("div");
             newPipDiv.style.background = pipColors[i];
-            newPipDiv.style.width  = "9px";
-            newPipDiv.style.height = "9px";
-            newPipDiv.style.borderRadius = "5px";
+            newPipDiv.style.width  = `${pipSize}px`;
+            newPipDiv.style.height = `${pipSize}px`;
+            newPipDiv.style.borderRadius = `${pipSize * 0.555}px`;
             newPipDiv.style.transition = "transform 0.1s ease";
-            newPipDiv.style.transform = "translate(18px,18px)";
+            newPipDiv.style.transform = `translate(${pipSize * 2}px, ${pipSize * 2}px)`;
             newPipDiv.style.position = "absolute";
+            newPipDiv.className = 'pip';
             this.loader.appendChild(newPipDiv);
             newPip = {
                 div: newPipDiv,
                 x: (i % columns) * gridSpacing,
-                y: Math.floor(i / 3) * gridSpacing
+                y: Math.floor(i / 3) * gridSpacing,
             };
             this.pips.push(newPip);
             this.movePip(newPip);
